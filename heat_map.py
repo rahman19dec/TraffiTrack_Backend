@@ -63,7 +63,7 @@ def main():
         labels = [
             f"{model.model.names[class_id]} {confidence:0.2f}"
             for _, confidence, class_id, _
-            in detections
+            in detections if class_id in [0,2]
         ]
         frame = box_annotator.annotate(
             scene=frame, 
