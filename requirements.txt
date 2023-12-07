@@ -1,1 +1,3 @@
 opencv-python==2.4.9
+ultralytics==8.0.223
+supervision==0.2.1
