@@ -29,9 +29,9 @@ def parse_arguments() -> argparse.Namespace:
 
 def main():
 
-    cap = cv2.VideoCapture(1)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, int(cap.get(3)))
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, int(cap.get(4)))
+    cap = cv2.VideoCapture(0)
+    cap.set(3, 640)
+    cap.set(4, 480)
     model = YOLO("yolov8l.pt")
 
     box_annotator = sv.BoxAnnotator(
@@ -40,7 +40,7 @@ def main():
         text_scale=1
     )
 
-    zone_polygon = (ZONE_POLYGON * np.array([int(cap.get(3)),int(cap.get(4))])).astype(int)
+    zone_polygon = (ZONE_POLYGON * np.array([int(cap.get(4)),int(cap.get(3))])).astype(int)
     zone = sv.PolygonZone(polygon=zone_polygon, frame_resolution_wh=tuple([int(cap.get(3)),int(cap.get(4))]))
     zone_annotator = sv.PolygonZoneAnnotator(
         zone=zone, 
@@ -73,13 +73,18 @@ def main():
 
         zone.trigger(detections=detections)
         frame = zone_annotator.annotate(scene=frame)
-        results = model.track(frame, persist=True)
-        frame = heatmap_obj.generate_heatmap(frame, tracks=results)
-        
+
+        #show counter
         cv2.imshow("yolov8", frame)
 
         if (cv2.waitKey(30) == 27):
             break
+
+
+
+        #show heatmap
+        # results = model.track(frame, persist=True)
+        # frame = heatmap_obj.generate_heatmap(frame, tracks=results)
 
 
 if __name__ == "__main__":
