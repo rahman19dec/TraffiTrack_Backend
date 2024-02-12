@@ -7,7 +7,9 @@ import matplotlib.patches as patches
 import sqlite3
 import ast
 from datetime import datetime
-
+import cv2
+import matplotlib.patches as patches
+from ultralytics.solutions import heatmap
 
 def create_heatmap(image, detections):
   
@@ -30,7 +32,7 @@ def create_heatmap(image, detections):
     ax.imshow(image)
 
     # Initialize heatmap matrix
-    heatmap = np.zeros_like(image, dtype=np.float)
+    heatmap = np.zeros_like(image, dtype=np.float64)
 
     # Plot bounding boxes and update heatmap
     for idx, boxes in enumerate(detections):
@@ -58,7 +60,7 @@ def create_heatmap(image, detections):
 
 
 
-def get_object_counts(start_time, end_time):
+def get_object_counts(names,cursor,start_time = '2023-02-11 20:01:01' , end_time = '2025-02-11 20:01:01'):
     """
     Retrieves counts of objects detected within a specified time range from a SQLite database.
 
@@ -73,8 +75,6 @@ def get_object_counts(start_time, end_time):
         - dict: A dictionary with timestamps as keys and counts of objects detected at each timestamp as values.
     """
     # Connect to the SQLite database
-    conn = sqlite3.connect('predictions_database.db')
-    cursor = conn.cursor()
 
     # Format datetime objects for SQL query
     start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
@@ -88,11 +88,8 @@ def get_object_counts(start_time, end_time):
 
     rows = cursor.fetchall()
 
-    # Close the connection
-    conn.close()
-
     # Process the data and count objects and class IDs
-    count_objects = {i:[] for i in model.names}  # Dictionary to store objects and their IDs
+    count_objects = {i:[] for i in names}  # Dictionary to store objects and their IDs
     time_objects = {}  # Dictionary to store timestamp and count of objects detected
     for row in rows:
         for type_, id_ in zip(ast.literal_eval(row[4]), ast.literal_eval(row[5])):
@@ -134,3 +131,102 @@ def plot_tracks(frame, results, track_history):
         cv2.polylines(frame, [points], isClosed=False, color=(230, 230, 230), thickness=10)
 
     return frame
+
+def create_predictions_table(cursor):
+    """
+    Create predictions table if not exists.
+
+    This function executes an SQL command to create a table named 'predictions_bytime' if it doesn't exist.
+
+    Args:
+        cursor (sqlite3.Cursor): SQLite database cursor object.
+    """
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS predictions_bytime (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            time TEXT,
+            xyxy TEXT,
+            confidence TEXT,
+            class_id TEXT,
+            object_id TEXT
+        )
+    ''')
+def insert_predictions(cursor, detections):
+    """
+    Insert predictions data into the 'predictions_bytime' table.
+
+    This function inserts predictions data into the 'predictions_bytime' table in an SQLite database.
+
+    Args:
+        cursor (sqlite3.Cursor): SQLite database cursor object.
+        detections (list): List of detection entries, each containing time, xyxy, confidence, class_id, and object_id.
+
+    Raises:
+        sqlite3.Error: If there is an error executing the SQL command.
+    """
+
+    for entry in detections:
+        # Extract data from the detection entry
+        time = entry['time']
+        xyxy = str(list(entry['xyxy']))
+        confidence = str(list(entry['confidence']))
+        class_id = str(list(entry['class_id']))
+        object_id = str(list(entry['object_id']))
+
+        # Insert data into the table
+        try:
+            cursor.execute('''
+                INSERT INTO predictions_bytime (time, xyxy, confidence, class_id, object_id)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (time, xyxy, confidence, class_id, object_id))
+        except sqlite3.Error as e:
+            print("Error inserting data:", e)
+            raise e
+def plot_filtered_counts_over_time(times, counts):
+    """
+    Plot filtered object counts over time.
+
+    This function filters time points based on changes in object counts and plots the results.
+
+    Args:
+    - times (list): A list of time points.
+    - counts (list): A list of corresponding object counts.
+
+    Returns:
+    - None
+    """
+    filtered_times = [times[0]]  # Add the first time point
+    filtered_counts = [counts[0]]  # Corresponding count
+    for i in range(1, len(times)):
+        if counts[i] != counts[i - 1]:  # If count changes from the previous time point
+            filtered_times.append(times[i])
+            filtered_counts.append(counts[i])
+
+    plt.plot(filtered_times, filtered_counts, marker='o')
+    plt.xlabel('Time')
+    plt.ylabel('Total Objects Detected')
+    plt.title('Traffic Objects Detected Over Time')
+    plt.xticks(rotation=45, ha='right')  # Rotate x-axis labels for better readability
+    plt.tight_layout()  # Adjust layout for better spacing
+    plt.show()
+
+def plot_non_zero_object_distribution(names,count_objects):
+    """
+    Plot distribution of non-zero confidence objects.
+
+    This function filters out objects with 0.0% confidence and plots the distribution.
+
+    Args:
+    - count_objects (dict): A dictionary containing object types as keys and lists of unique IDs as values.
+
+    Returns:
+    - None
+    """
+    # Filter out objects with 0.0% confidence
+    non_zero_sizes = {names[i]: len(ids) for i, ids in count_objects.items() if len(ids) > 0}
+
+    # Plot pie chart
+    plt.pie(non_zero_sizes.values(), labels=non_zero_sizes.keys(), autopct='%1.1f%%', startangle=90)
+    plt.axis('equal')  # Equal aspect ratio ensures the pie is drawn as a circle.
+    plt.title('Distribution of Traffic Objects')
+    plt.show()
