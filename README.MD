@@ -6,6 +6,8 @@ Create a python3 environent (python 3.8+) and activate it.
 run the main.py file to run the program, and you have to run the fapi/app.py to make the apis available.
 both can be run from the work directory.
 
+If you wnat to run the edge device without a monitor, at first enable SSH on the edge device, and then control the device via an SSH connection.
+
 ## API access points
 
 ### /all
