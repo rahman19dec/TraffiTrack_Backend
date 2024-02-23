@@ -23,3 +23,5 @@ make python3.8 env:
 python3.8 -m venv env
 source myenv/bin/activate
 
+cuda:
+export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
