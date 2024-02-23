@@ -25,3 +25,9 @@ source myenv/bin/activate
 
 cuda:
 export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
+
+vscode:
+## not working: wget -N -O vscode-linux-deb.arm64.deb https://update.code.visualstudio.com/latest/linux-deb-arm64/stable
+-download arm64
+sudo dpkg -i code_1.86.2-1707853305_arm64.deb
+
