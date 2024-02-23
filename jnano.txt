@@ -31,3 +31,8 @@ vscode:
 -download arm64
 sudo dpkg -i code_1.86.2-1707853305_arm64.deb
 
+# In jetson platform there is no nvidia-smi. but there is tegrastats
+/usr/bin/tegrastats
+
+# install jtop 
+sudo pip3 install -U jetson-stats
