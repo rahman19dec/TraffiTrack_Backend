@@ -147,7 +147,7 @@ def create_detection_table(cursor):
             time TEXT,
             xyxy TEXT,
             confidence TEXT,
-            class_id TEXT,
+            class_id TEXT,s
             object_id TEXT
         )
     ''')
