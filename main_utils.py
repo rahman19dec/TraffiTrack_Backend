@@ -82,7 +82,7 @@ def get_object_counts(names,cursor,start_time = '2023-02-11 20:01:01' , end_time
 
     # Query the database based on the time range
     cursor.execute('''
-        SELECT * FROM predictions_bytime
+        SELECT * FROM detection_bytime
         WHERE time BETWEEN ? AND ?
     ''', (start_time, end_time))
 
@@ -132,17 +132,17 @@ def plot_tracks(frame, results, track_history):
 
     return frame
 
-def create_predictions_table(cursor):
+def create_detection_table(cursor):
     """
-    Create predictions table if not exists.
+    Create detection table if not exists.
 
-    This function executes an SQL command to create a table named 'predictions_bytime' if it doesn't exist.
+    This function executes an SQL command to create a table named 'detection_bytime' if it doesn't exist.
 
     Args:
         cursor (sqlite3.Cursor): SQLite database cursor object.
     """
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS predictions_bytime (
+        CREATE TABLE IF NOT EXISTS detection_bytime (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             time TEXT,
             xyxy TEXT,
@@ -151,11 +151,11 @@ def create_predictions_table(cursor):
             object_id TEXT
         )
     ''')
-def insert_predictions(cursor, detections):
+def insert_detection(cursor, detections):
     """
-    Insert predictions data into the 'predictions_bytime' table.
+    Insert detection data into the 'detection_bytime' table.
 
-    This function inserts predictions data into the 'predictions_bytime' table in an SQLite database.
+    This function inserts detection data into the 'detection_bytime' table in an SQLite database.
 
     Args:
         cursor (sqlite3.Cursor): SQLite database cursor object.
@@ -176,7 +176,7 @@ def insert_predictions(cursor, detections):
         # Insert data into the table
         try:
             cursor.execute('''
-                INSERT INTO predictions_bytime (time, xyxy, confidence, class_id, object_id)
+                INSERT INTO detection_bytime (time, xyxy, confidence, class_id, object_id)
                 VALUES (?, ?, ?, ?, ?)
             ''', (time, xyxy, confidence, class_id, object_id))
         except sqlite3.Error as e:
