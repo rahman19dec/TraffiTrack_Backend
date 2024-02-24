@@ -8,8 +8,8 @@ import numpy as np
 import sqlite3
 import ast
 from datetime import datetime
-import matplotlib
-matplotlib.use('TkAgg')
+#import matplotlib
+#matplotlib.use('TkAgg')
 
 import matplotlib.pyplot as plt
 from collections import defaultdict

@@ -37,4 +37,8 @@ sudo dpkg -i code_1.86.2-1707853305_arm64.deb
 # install jtop 
 sudo pip3 install -U jetson-stats
 
-# pip install 
+example count url
+http://127.0.0.1:5000/count?from_time=2024-02-24%2015:00:00&to_time=2025-02-25%2016:00:00
+http://127.0.0.1:5000/count
+http://127.0.0.1:5000/count?from_time=2024-02-24%2015:00:00
+http://127.0.0.1:5000/count?to_time=2025-02-25%2016:00:00

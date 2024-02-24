@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 # from main_utils import *
 from utils import *
-
+import time
 MODEL = "best.pt"
 model = YOLO(MODEL)
 
@@ -33,10 +33,7 @@ create_detection_table(cursor)
 
 # Function to update the Matplotlib plot with new frames
 def update_plot(frame):
-    plt.clf()
-    plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-    plt.axis('off')
-    plt.pause(0.1)
+    cv2.imshow('output',frame)
 
 plt.ion()  # Turn on interactive mode for Matplotlib
 #[{'time': '2024-02-23 14:20:37', 'xyxy': [[28.64773178100586, 134.34608459472656, 640.0, 479.8232727050781]], 'confidence': [0.893378496170044], 'class_id': [0], 'object_id': [1]}]
