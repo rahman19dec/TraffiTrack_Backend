@@ -36,3 +36,5 @@ sudo dpkg -i code_1.86.2-1707853305_arm64.deb
 
 # install jtop 
 sudo pip3 install -U jetson-stats
+
+# pip install 
