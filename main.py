@@ -5,7 +5,8 @@ import sqlite3
 from datetime import datetime
 import matplotlib.pyplot as plt
 from collections import defaultdict
-from main_utils import *
+# from main_utils import *
+from utils import *
 
 MODEL = "best.pt"
 model = YOLO(MODEL)

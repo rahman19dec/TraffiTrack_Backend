@@ -13,7 +13,8 @@ matplotlib.use('TkAgg')
 
 import matplotlib.pyplot as plt
 from collections import defaultdict
-from main_utils import *
+# from main_utils import *
+from utils import *
 
 
 
