@@ -10,6 +10,7 @@ from utils import *
 
 MODEL = "best.pt"
 model = YOLO(MODEL)
+"commit"
 
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
