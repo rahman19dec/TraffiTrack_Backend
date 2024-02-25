@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request
 import sqlite3
 import ast 
+from collections import Counter
+
 
 app = Flask(__name__)
 
@@ -55,9 +57,15 @@ def get_count():
     
     # Process the data to calculate counts
     count = {i: 0 for i, _ in classes.items()}
+    last_count = count.copy()
+
     for arr in data:
-        for c in ast.literal_eval(arr[4]):
-            count[c] += 1
+        rec_count = {element: c for element, c in Counter(ast.literal_eval(arr[4])).items()}
+        for k, v in rec_count.items():
+            if last_count[k] < v:
+                count[k] += v - last_count[k]
+            last_count[k] = v
+        print(arr, rec_count, count, last_count)
     
     # Return the counts as JSON
     return jsonify(count)
