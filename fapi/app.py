@@ -65,8 +65,8 @@ def get_count():
             if last_count[k] < v:
                 count[k] += v - last_count[k]
             last_count[k] = v
-        print(arr, rec_count, count, last_count)
-    
+        # print(arr, rec_count, count, last_count)
+
     # Return the counts as JSON
     return jsonify(count)
 
