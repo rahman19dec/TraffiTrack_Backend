@@ -37,8 +37,8 @@ def get_all_data():
 def get_count():
     # Get optional parameters from the request
     # example: http://127.0.0.1:5000/count?from_time=2024-02-24%2015:00:00&to_time=2025-02-25%2016:00:00
-    from_time = request.args.get('from_time').replace('T',' ')
-    to_time = request.args.get('to_time').replace('T',' ')
+    from_time = request.args.get('from_time')
+    to_time = request.args.get('to_time')
     print(from_time, to_time)
     
     # Construct the base SQL command
@@ -46,11 +46,11 @@ def get_count():
     
     # Add WHERE clause to filter by time range if both from_time and to_time are provided
     if from_time and to_time:
-        command += f" WHERE time BETWEEN '{from_time}' AND '{to_time}'"
+        command += f" WHERE time BETWEEN '{from_time.replace('T',' ')}' AND '{to_time.replace('T',' ')}'"
     elif from_time:
-        command += f" WHERE time >= '{from_time}'"
+        command += f" WHERE time >= '{from_time.replace('T',' ')}'"
     elif to_time:
-        command += f" WHERE time <= '{to_time}'"
+        command += f" WHERE time <= '{to_time.replace('T',' ')}'"
     
     # Execute the database query
     data = read_db(command)
