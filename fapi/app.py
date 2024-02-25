@@ -37,8 +37,8 @@ def get_all_data():
 def get_count():
     # Get optional parameters from the request
     # example: http://127.0.0.1:5000/count?from_time=2024-02-24%2015:00:00&to_time=2025-02-25%2016:00:00
-    from_time = request.args.get('from_time')
-    to_time = request.args.get('to_time')
+    from_time = request.args.get('from_time').replace('T',' ')
+    to_time = request.args.get('to_time').replace('T',' ')
     print(from_time, to_time)
     
     # Construct the base SQL command
