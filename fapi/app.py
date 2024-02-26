@@ -1,17 +1,24 @@
 from flask import Flask, jsonify, request
 import sqlite3
-import ast 
+import os, ast 
 from collections import Counter
-
 
 app = Flask(__name__)
 
 classes = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 
             4: 'bus', 5: 'truck'}
 
+
+
+
+
 def read_db(command):
+    app_dir = os.path.dirname(os.path.abspath(__file__))
+    parent_dir = os.path.abspath(os.path.join(app_dir, os.pardir))
+    db_path = os.path.join(parent_dir, 'detection_database.db')
+    
     try:
-        conn = sqlite3.connect('../detection_database.db')
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         # Execute a query to fetch data from the database
@@ -24,7 +31,7 @@ def read_db(command):
 
         # Return the data as JSON
         return data
-    except:
+    except Exception as error:
         return {'message':error}
 
 
@@ -69,12 +76,6 @@ def get_count():
 
     # Return the counts as JSON
     return jsonify(count)
-
-
-
-
-
-
 
 
 
