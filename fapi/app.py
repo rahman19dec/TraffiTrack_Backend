@@ -46,7 +46,6 @@ def get_count():
     # example: http://127.0.0.1:5000/count?from_time=2024-02-24%2015:00:00&to_time=2025-02-25%2016:00:00
     from_time = request.args.get('from_time')
     to_time = request.args.get('to_time')
-    print(from_time, to_time)
     
     # Construct the base SQL command
     command = 'SELECT * FROM detection_bytime'
@@ -65,6 +64,10 @@ def get_count():
     # Process the data to calculate counts
     count = {i: 0 for i, _ in classes.items()}
     last_count = count.copy()
+    line_count = {i[1]: {j: 0 for j, _ in classes.items()} for i in data}
+    for dec in data:
+        for i in eval(dec[-2]):
+            line_count[dec[1]][i]+=1
 
     for arr in data:
         rec_count = {element: c for element, c in Counter(ast.literal_eval(arr[4])).items()}
@@ -75,7 +78,7 @@ def get_count():
         # print(arr, rec_count, count, last_count)
 
     # Return the counts as JSON
-    return jsonify(count)
+    return jsonify({'pie':count,'line':line_count})
 
 
 
