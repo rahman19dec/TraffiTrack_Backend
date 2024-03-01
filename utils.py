@@ -82,7 +82,7 @@ def get_object_counts(names,cursor,start_time = '2023-02-11 20:01:01' , end_time
 
     # Query the database based on the time range
     cursor.execute('''
-        SELECT * FROM predictions_bytime
+        SELECT * FROM detection_bytime
         WHERE time BETWEEN ? AND ?
     ''', (start_time, end_time))
 

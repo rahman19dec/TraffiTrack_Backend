@@ -38,7 +38,7 @@ track_history = defaultdict(lambda: [])
 
 
 
-conn = sqlite3.connect('predictions_database.db')
+conn = sqlite3.connect('detection_database.db')
 cursor = conn.cursor()
 
 
@@ -68,7 +68,7 @@ cursor = conn.cursor()
 #   else:
 #     break
 
-cursor.execute('SELECT * FROM predictions_bytime')
+cursor.execute('SELECT * FROM detection_bytime')
 rows = cursor.fetchall()
 print(rows)
 
