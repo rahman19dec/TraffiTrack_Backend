@@ -27,6 +27,6 @@ Examples:
 
 ### /stat (optional: from_time, to_time)
 
-returns number of object instances by time (line) as well as an overall count (pie).
+returns number of object instances by time. 
 <br> Example:
 <br>http://localhost:5000/stat?from_time=2024-02-24T12:00:00&to_time=2024-02-24T13:00:00
