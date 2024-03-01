@@ -71,11 +71,15 @@ def get_count():
 
     for arr in data:
         rec_count = {element: c for element, c in Counter(ast.literal_eval(arr[4])).items()}
+        rec_count = {i: rec_count.get(i, 0) for i in range (6)}
+
         for k, v in rec_count.items():
             if last_count[k] < v:
                 count[k] += v - last_count[k]
-            last_count[k] = v
-        # print(arr, rec_count, count, last_count)
+
+        print(rec_count, last_count, count)
+        last_count.update(rec_count)
+
 
     # Return the counts as JSON
     return jsonify({'pie':count,'line':line_count})
