@@ -29,4 +29,4 @@ Examples:
 
 returns number of object instances by time (line) as well as an overall count (pie).
 <br> Example:
-<br>http://localhost:5000/count?from_time=2024-02-24T12:00:00&to_time=2024-02-24T13:00:00
+<br>http://localhost:5000/stat?from_time=2024-02-24T12:00:00&to_time=2024-02-24T13:00:00
