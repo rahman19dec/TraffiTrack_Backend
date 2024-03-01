@@ -77,7 +77,7 @@ def get_count():
             if last_count[k] < v:
                 count[k] += v - last_count[k]
 
-        print(rec_count, last_count, count)
+        # print(rec_count, last_count, count)
         last_count.update(rec_count)
 
 
@@ -122,7 +122,7 @@ def get_stat():
             if last_count[k] < v:
                 count[k] += v - last_count[k]
 
-        print(rec_count, last_count, count)
+        # print(rec_count, last_count, count)
         last_count.update(rec_count)
 
 
