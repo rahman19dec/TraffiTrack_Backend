@@ -127,6 +127,8 @@ def get_stat():
 
 
     # Return the counts as JSON
+    # return jsonify({'pie':count,'line':line_count})
+
     return jsonify(line_count)
 
 
