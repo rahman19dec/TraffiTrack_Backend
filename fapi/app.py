@@ -117,6 +117,19 @@ def get_stat():
     return jsonify(line_count)
 
 
+# @app.route('/carbon', methods=['GET'])
+# def get_carbon():
+#     # example: http://127.0.0.1:5000/carbon?from_time=2024-02-24T15:00:00&to_time=2025-02-25%2016:00:00
+#     from_time = request.args.get('from_time')
+#     to_time = request.args.get('to_time')
+#     average_emissions = {
+#         '2': 0.225,       # Average of 0.2 and 0.25
+#         '5': 0.45,      # Average of 0.4 and 0.5
+#         '4': 0.35,        # Average of 0.3 and 0.4
+#         '3': 0.125 # Average of 0.1 and 0.15
+#     }
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
