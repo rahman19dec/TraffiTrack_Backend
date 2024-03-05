@@ -153,11 +153,15 @@ def get_carbon():
         # print(rec_count, last_count, count)
         last_count.update(rec_count)
     
-    carbon = 0
+    carbon = {i:0 for i in classes.keys()}
+    total_carbon = 0
+
     for k, v in count.items():
-        carbon += v * carbon_index.get(str(k), 0) * travel_index.get(str(k), 0)
-    carbon_tons = carbon/1000000
-    return jsonify({'carbon': carbon_tons})
+        carbon[k] = v * carbon_index.get(str(k), 0) * travel_index.get(str(k), 0)/1000000
+        total_carbon += v * carbon_index.get(str(k), 0) * travel_index.get(str(k), 0)/1000000
+
+    print(carbon)
+    return jsonify({'classes': carbon, 'total_carbon': total_carbon})
     
     
 
