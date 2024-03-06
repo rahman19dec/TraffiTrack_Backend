@@ -1,5 +1,10 @@
 from flask import Flask, jsonify, request
-import sqlite3
+import urllib.parse as up
+import psycopg2
+
+from dotenv import load_dotenv
+
+load_dotenv()
 import os, ast 
 from collections import Counter
 
@@ -20,7 +25,14 @@ def read_db(command):
     db_path = os.path.join(parent_dir, 'detection_database.db')
     
     try:
-        conn = sqlite3.connect(db_path)
+        up.uses_netloc.append("postgres")
+        url = up.urlparse(os.getenv("DATABASE_URL"))
+        conn = psycopg2.connect(database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+        )
         cursor = conn.cursor()
 
         # Execute a query to fetch data from the database

@@ -143,8 +143,8 @@ def create_detection_table(cursor):
     """
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS detection_bytime (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            time TEXT,
+            id SERIAL PRIMARY KEY,
+            time TIMESTAMP,
             xyxy TEXT,
             confidence TEXT,
             class_id TEXT,
@@ -177,7 +177,7 @@ def insert_detection(cursor, detections):
         try:
             cursor.execute('''
                 INSERT INTO detection_bytime (time, xyxy, confidence, class_id, object_id)
-                VALUES (?, ?, ?, ?, ?)
+                VALUES (%s, %s, %s, %s, %s)
             ''', (time, xyxy, confidence, class_id, object_id))
         except sqlite3.Error as e:
             print("Error inserting data:", e)

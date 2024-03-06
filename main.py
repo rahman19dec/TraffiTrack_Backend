@@ -5,38 +5,58 @@ import sqlite3
 from datetime import datetime
 import matplotlib.pyplot as plt
 from collections import defaultdict
-# from main_utils import *
-from utils import *
 import time
+from utils import *
+import os
+import urllib.parse as up
+import psycopg2
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Initialize YOLO model
 MODEL = "best.pt"
 model = YOLO(MODEL)
 
-# cap = cap = cv2.VideoCapture(0)
-
+# Open the webcam
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
 frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+# Initialize heatmap object
 heatmap_obj = heatmap.Heatmap()
 heatmap_obj.set_args(colormap=cv2.COLORMAP_PARULA, imw=frame_width, imh=frame_height, shape="circle")
 
+# Initialize variables
 detections = []
-count = 0
 track_history = defaultdict(lambda: [])
 
-conn = sqlite3.connect('detection_database.db')
+# Connect to ElephantSQL database
+up.uses_netloc.append("postgres")
+url = up.urlparse(os.getenv("DATABASE_URL"))
+conn = psycopg2.connect(database=url.path[1:],
+user=url.username,
+password=url.password,
+host=url.hostname,
+port=url.port
+)
+#conn = psycopg2.connect(dbname='rswuxdrz',user='rswuxdrz' ,host='cornelius.db.elephantsql.com' ,password='ZCPH0O7KC5t3EmdmnCvmQuH2sQBziSwc')
+
+
 cursor = conn.cursor()
 
-# Create detection table if it does not exit
+# Create detection table if it does not exist
 create_detection_table(cursor)
 
 # Function to update the Matplotlib plot with new frames
 def update_plot(frame):
-    cv2.imshow('output',frame)
+    cv2.imshow('output', frame)
 
 plt.ion()  # Turn on interactive mode for Matplotlib
-#[{'time': '2024-02-23 14:20:37', 'xyxy': [[28.64773178100586, 134.34608459472656, 640.0, 479.8232727050781]], 'confidence': [0.893378496170044], 'class_id': [0], 'object_id': [1]}]
+
 try:
     while cap.isOpened():
         success, image = cap.read()
@@ -62,12 +82,9 @@ try:
                 annotated_frame = None
 
             if annotated_frame is not None and annotated_frame.size > 0:
-              
-                # update_plot(annotated_frame)
                 pass
             else:
-              pass
-                # update_plot(image)
+                pass
 
             plt.pause(0.5)
 
@@ -76,7 +93,7 @@ try:
 
 except KeyboardInterrupt:
     pass
-  
 
+# Release the webcam and close all windows
 cap.release()
 cv2.destroyAllWindows()
