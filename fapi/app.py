@@ -30,7 +30,7 @@ def read_db(command):
     db_path = os.path.join(parent_dir, 'detection_database.db')
     
     try:
-        conn = psycopg2.connect(dbname='rswuxdrz',user='rswuxdrz' ,host='cornelius.db.elephantsql.com' ,password=os.getenv('x'))
+        conn = psycopg2.connect(dbname='jzvsjijt',user='jzvsjijt' ,host='cornelius.db.elephantsql.com' ,password=os.getenv('x'))
         cursor = conn.cursor()
 
         # Execute a query to fetch data from the database
@@ -99,7 +99,7 @@ def get_count():
 @app.route('/stat', methods=['GET'])
 def get_stat():
     # Get optional parameters from the request
-    # example: http://127.0.0.1:5000/count?from_time=2024-02-24%2015:00:00&to_time=2025-02-25%2016:00:00
+    # example: http://127.0.0.1:5000/stat?from_time=2024-02-24%2015:00:00&to_time=2025-02-25%2016:00:00
     from_time = request.args.get('from_time')
     to_time = request.args.get('to_time')
     
@@ -121,6 +121,7 @@ def get_stat():
     count = {i: 0 for i, _ in classes.items()}
     last_count = count.copy()
     line_count = {i[1]: {j: 0 for j, _ in classes.items()} for i in data}
+
     for dec in data:
         for i in eval(dec[-2]):
             line_count[dec[1]][i]+=1
