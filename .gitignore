@@ -2,4 +2,4 @@
 __pycache__
 .ignore
 *.swp
-env
+.env

@@ -35,15 +35,15 @@ detections = []
 track_history = defaultdict(lambda: [])
 
 # Connect to ElephantSQL database
-up.uses_netloc.append("postgres")
-url = up.urlparse(os.getenv("DATABASE_URL"))
-conn = psycopg2.connect(database=url.path[1:],
-user=url.username,
-password=url.password,
-host=url.hostname,
-port=url.port
-)
-#conn = psycopg2.connect(dbname='rswuxdrz',user='rswuxdrz' ,host='cornelius.db.elephantsql.com' ,password='ZCPH0O7KC5t3EmdmnCvmQuH2sQBziSwc')
+# up.uses_netloc.append("postgres")
+# url = up.urlparse(os.getenv("DATABASE_URL"))
+# conn = psycopg2.connect(database=url.path[1:],
+# user=url.username,
+# password=url.password,
+# host=url.hostname,
+# port=url.port
+# )
+conn = psycopg2.connect(dbname='rswuxdrz',user='rswuxdrz' ,host='cornelius.db.elephantsql.com' ,password=os.getenv('x'))
 
 
 cursor = conn.cursor()
