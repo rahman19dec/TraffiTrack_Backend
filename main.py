@@ -43,7 +43,7 @@ track_history = defaultdict(lambda: [])
 # host=url.hostname,
 # port=url.port
 # )
-conn = psycopg2.connect(dbname='rswuxdrz',user='rswuxdrz' ,host='cornelius.db.elephantsql.com' ,password=os.getenv('x'))
+conn = psycopg2.connect(dbname='jzvsjijt',user='jzvsjijt' ,host='cornelius.db.elephantsql.com' ,password=os.getenv('x'))
 
 
 cursor = conn.cursor()
@@ -52,18 +52,23 @@ cursor = conn.cursor()
 create_detection_table(cursor)
 
 # Function to update the Matplotlib plot with new frames
-def update_plot(frame):
-    cv2.imshow('output', frame)
+def update_plot(frame, scale=0.80):
+    # Resize the frame to half its size (or any other scale factor)
+    width = int(frame.shape[1] * scale)
+    height = int(frame.shape[0] * scale)
+    resized_frame = cv2.resize(frame, (width, height), interpolation=cv2.INTER_AREA)
 
-plt.ion()  # Turn on interactive mode for Matplotlib
+    cv2.imshow('output', resized_frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):  # Press 'q' to exit
+        return
 
 try:
     while cap.isOpened():
         success, image = cap.read()
         if success:
-            results = model.track(image, persist=True, tracker="bytetrack.yaml")
+            results = model.track(image, persist=True, tracker="bytetrack.yaml",imgsz=256)
             heatmap_frame = heatmap_obj.generate_heatmap(image.copy(), results)
-            update_plot(heatmap_frame)
+
             if results[0].boxes.id is not None:
                 detections = [{'time': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                                'xyxy': list(results[0].boxes.xyxy.cpu().tolist()),
@@ -72,6 +77,7 @@ try:
                                'object_id': list(map(int, list(results[0].boxes.id.cpu().tolist())))}]
                 frame = results[0].plot()
                 annotated_frame = plot_tracks(frame, results, track_history)
+                update_plot(annotated_frame)
                 try:
                     insert_detection(cursor, detections)
                     conn.commit()  # Commit the transaction
