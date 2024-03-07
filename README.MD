@@ -23,10 +23,11 @@ Examples:
 <br>http://localhost:5000/count
 <br>http://localhost:5000/count?from_time=2024-02-24T13:00:00
 <br>http://localhost:5000/count?from_time=2024-02-24T12:00:00&to_time=2024-02-24T13:00:00
+<br>note that here 'T' is used to seperate date and time, you can leave a space, or %20
 
 ### /carbon (optional: from_time, to_time)<br>
 returns carbon estimte for both individual classses and total emission<br>
-<br>note that here 'T' is used to seperate date and time, you can leave a space, or %20
+
 
 ### /stat (optional: from_time, to_time)
 
