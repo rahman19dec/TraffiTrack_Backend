@@ -52,15 +52,13 @@ cursor = conn.cursor()
 create_detection_table(cursor)
 
 # Function to update the Matplotlib plot with new frames
-def update_plot(frame, scale=0.80):
-    # Resize the frame to half its size (or any other scale factor)
-    width = int(frame.shape[1] * scale)
-    height = int(frame.shape[0] * scale)
-    resized_frame = cv2.resize(frame, (width, height), interpolation=cv2.INTER_AREA)
+def update_plot(frame):
+    plt.clf()
+    plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+    plt.axis('off')
+    plt.pause(0.1)
 
-    cv2.imshow('output', resized_frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):  # Press 'q' to exit
-        return
+plt.ion()
 
 try:
     while cap.isOpened():
