@@ -8,8 +8,12 @@ both can be run from the work directory.
 
 If you wnat to run the edge device without a monitor, at first enable SSH on the edge device, and then control the device via an SSH connection.
 
+Frontend: https://github.com/Arafatmollik1/TraffiTrack_Frontend
+![Frontend showing stat](./media/frontend.jpeg)
+
 ## API access points
 
+![API carbon stat](./media/api_carbon.jpeg)
 ### /all
 
 returns all result from the database in array format
