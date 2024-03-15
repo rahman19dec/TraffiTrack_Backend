@@ -1,3 +1,5 @@
+# Backend
+
 This backend is developed for TraffiTrack system which is planned to deploy on Jetson Nano Developer Kit.
 
 If you want to run on a different system for example on your laptop, some python dependencies might be irrelevent.
@@ -8,8 +10,6 @@ both can be run from the work directory.
 
 If you wnat to run the edge device without a monitor, at first enable SSH on the edge device, and then control the device via an SSH connection.
 
-Frontend: https://github.com/Arafatmollik1/TraffiTrack_Frontend
-![Frontend showing stat](./Media/frontend.jpeg)
 
 ## API access points
 
@@ -40,3 +40,33 @@ returns carbon estimte for both individual classses and total emission<br>
 returns number of object instances by time. 
 <br> Example:
 <br>http://localhost:5000/stat?from_time=2024-02-24T12:00:00&to_time=2024-02-24T13:00:00
+
+# Frontend
+
+Frontend: https://github.com/Arafatmollik1/TraffiTrack_Frontend
+![Frontend showing stat](./Media/frontend.jpeg)
+
+## Installation and Runing the Frontend
+
+Here are the steps you need to follow to install the dependencies.
+
+```
+npm install
+```
+
+or
+
+```
+yarn install
+```
+
+Now run this command to start the developement server
+
+```
+npm run dev
+```
+
+or
+
+```
+yarn dev
